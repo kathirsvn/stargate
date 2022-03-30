@@ -196,6 +196,152 @@
       <artifactId>awaitility</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.datastax.bdp</groupId>
+      <artifactId>solr-uber-with-auth_2.1</artifactId>
+      <version>6.0.1.4.2887</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-configuration</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>geronimo-stax-api_1.0_spec</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.restlet.jee</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- default-pkg dependencies-->
+    <dependency>
+      <groupId>jdom</groupId>
+      <artifactId>jdom</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.gridkit.jvmtool</groupId>
+      <artifactId>sjk-core</artifactId>
+      <version>0.14</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>dnsjava</groupId>
+      <artifactId>dnsjava</artifactId>
+      <version>2.1.8</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-analysis</artifactId>
+      <version>9.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-tree</artifactId>
+      <version>9.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-util</artifactId>
+      <version>9.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.7.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.10.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.10.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.10.5.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.10.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+      <version>2.11.4</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-guava</artifactId>
+      <version>2.10.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jdk8</artifactId>
+      <version>2.10.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>2.10.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-jaxb-annotations</artifactId>
+      <version>2.10.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>2.3.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.woodstox</groupId>
+      <artifactId>woodstox-core</artifactId>
+      <version>6.0.2</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -226,35 +372,131 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>unpack-sjk</id>
+            <id>unpack-default-pkgs</id>
             <phase>compile</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
             <configuration>
               <artifactItems>
+                <artifactItem>
+                  <groupId>jdom</groupId>
+                  <artifactId>jdom</artifactId>
+                  <version>1.0</version>
+                  <outputDirectory>
+                    ${project.build.directory}/jdom
+                  </outputDirectory>
+                </artifactItem>
                 <artifactItem>
                   <groupId>org.gridkit.jvmtool</groupId>
                   <artifactId>sjk-core</artifactId>
                   <version>0.14</version>
                   <outputDirectory>${project.build.directory}/sjk-core</outputDirectory>
                 </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>unpack-dnsjava</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>unpack</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
                 <artifactItem>
                   <groupId>dnsjava</groupId>
                   <artifactId>dnsjava</artifactId>
                   <version>2.1.8</version>
                   <outputDirectory>${project.build.directory}/dnsjava</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm-analysis</artifactId>
+                  <version>9.2</version>
+                  <outputDirectory>${project.build.directory}/asm-analysis</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm-tree</artifactId>
+                  <version>9.2</version>
+                  <outputDirectory>${project.build.directory}/asm-tree</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm-util</artifactId>
+                  <version>9.2</version>
+                  <outputDirectory>${project.build.directory}/asm-util</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.azure</groupId>
+                  <artifactId>azure-core</artifactId>
+                  <version>1.7.0</version>
+                  <outputDirectory>${project.build.directory}/azure-core</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.azure</groupId>
+                  <artifactId>azure-identity</artifactId>
+                  <version>1.1.0</version>
+                  <outputDirectory>${project.build.directory}/azure-identity</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.jackson.core</groupId>
+                  <artifactId>jackson-annotations</artifactId>
+                  <version>2.10.0</version>
+                  <outputDirectory>${project.build.directory}/jackson-annotations</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.jackson.core</groupId>
+                  <artifactId>jackson-core</artifactId>
+                  <version>2.10.0</version>
+                  <outputDirectory>${project.build.directory}/jackson-core</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.jackson.core</groupId>
+                  <artifactId>jackson-databind</artifactId>
+                  <version>2.10.5.1</version>
+                  <outputDirectory>${project.build.directory}/jackson-databind</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.jackson.dataformat</groupId>
+                  <artifactId>jackson-dataformat-xml</artifactId>
+                  <version>2.10.1</version>
+                  <outputDirectory>${project.build.directory}/jackson-dataformat-xml</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.jackson.dataformat</groupId>
+                  <artifactId>jackson-dataformat-yaml</artifactId>
+                  <version>2.11.4</version>
+                  <outputDirectory>${project.build.directory}/jackson-dataformat-yaml
+                  </outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.jackson.datatype</groupId>
+                  <artifactId>jackson-datatype-guava</artifactId>
+                  <version>2.10.0</version>
+                  <outputDirectory>${project.build.directory}/jackson-datatype-guava</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.jackson.datatype</groupId>
+                  <artifactId>jackson-datatype-jdk8</artifactId>
+                  <version>2.10.0</version>
+                  <outputDirectory>${project.build.directory}/jackson-datatype-jdk8</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.jackson.datatype</groupId>
+                  <artifactId>jackson-datatype-jsr310</artifactId>
+                  <version>2.10.0</version>
+                  <outputDirectory>${project.build.directory}/jackson-datatype-jsr310
+                  </outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.jackson.module</groupId>
+                  <artifactId>jackson-module-jaxb-annotations</artifactId>
+                  <version>2.10.1</version>
+                  <outputDirectory>${project.build.directory}/jackson-module-jaxb-annotations
+                  </outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>jakarta.xml.bind</groupId>
+                  <artifactId>jakarta.xml.bind-api</artifactId>
+                  <version>2.3.2</version>
+                  <outputDirectory>${project.build.directory}/jakarta.xml.bind-api</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>com.fasterxml.woodstox</groupId>
+                  <artifactId>woodstox-core</artifactId>
+                  <version>6.0.2</version>
+                  <outputDirectory>${project.build.directory}/woodstox-core</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -265,7 +507,7 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
-            <id>fix-sjk-core</id>
+            <id>fix-default-pkgs</id>
             <phase>process-classes</phase>
             <goals>
               <goal>run</goal>
@@ -274,31 +516,144 @@
               <tasks>
                 <!-- Remove root package classes -->
                 <delete>
-                  <fileset dir="${project.build.directory}/sjk-core/" includes="*.class" />
+                  <fileset dir="${project.build.directory}/jdom/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jdom-1.0.jar">
+                  <fileset dir="${project.build.directory}/jdom"/>
+                </jar>
+                <delete dir="${project.build.directory}/jdom"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/sjk-core/" includes="*.class"/>
                 </delete>
                 <jar destfile="${project.build.directory}/classes/sjk-core-0.14.jar">
-                  <fileset dir="${project.build.directory}/sjk-core" />
+                  <fileset dir="${project.build.directory}/sjk-core"/>
                 </jar>
-                <delete dir="${project.build.directory}/sjk-core" />
-              </tasks>
-            </configuration>
-          </execution>
-          <execution>
-            <id>fix-dnsjava</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <!-- Remove root package classes -->
+                <delete dir="${project.build.directory}/sjk-core"/>
                 <delete>
-                  <fileset dir="${project.build.directory}/dnsjava/" includes="*.class" />
+                  <fileset dir="${project.build.directory}/dnsjava/" includes="*.class"/>
                 </delete>
                 <jar destfile="${project.build.directory}/classes/dnsjava-2.1.8.jar">
-                  <fileset dir="${project.build.directory}/dnsjava" />
+                  <fileset dir="${project.build.directory}/dnsjava"/>
                 </jar>
-                <delete dir="${project.build.directory}/dnsjava" />
+                <delete dir="${project.build.directory}/dnsjava"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/asm-analysis/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/asm-analysis-9.2.jar">
+                  <fileset dir="${project.build.directory}/asm-analysis"/>
+                </jar>
+                <delete dir="${project.build.directory}/asm-analysis"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/asm-tree/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/asm-tree-9.2.jar">
+                  <fileset dir="${project.build.directory}/asm-tree"/>
+                </jar>
+                <delete dir="${project.build.directory}/asm-tree"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/asm-util/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/asm-util-9.2.jar">
+                  <fileset dir="${project.build.directory}/asm-util"/>
+                </jar>
+                <delete dir="${project.build.directory}/asm-util"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/azure-core/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/azure-core-1.7.0.jar">
+                  <fileset dir="${project.build.directory}/azure-core"/>
+                </jar>
+                <delete dir="${project.build.directory}/azure-core"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/azure-identity/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/azure-identity-1.1.0.jar">
+                  <fileset dir="${project.build.directory}/azure-identity"/>
+                </jar>
+                <delete dir="${project.build.directory}/azure-identity"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jackson-annotations/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jackson-annotations-2.10.0.jar">
+                  <fileset dir="${project.build.directory}/jackson-annotations"/>
+                </jar>
+                <delete dir="${project.build.directory}/jackson-annotations"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jackson-core/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jackson-core-2.10.0.jar">
+                  <fileset dir="${project.build.directory}/jackson-core"/>
+                </jar>
+                <delete dir="${project.build.directory}/jackson-core"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jackson-databind/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jackson-databind-2.10.5.1.jar">
+                  <fileset dir="${project.build.directory}/jackson-databind"/>
+                </jar>
+                <delete dir="${project.build.directory}/jackson-databind"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jackson-dataformat-xml/"
+                           includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jackson-dataformat-xml-2.10.1.jar">
+                  <fileset dir="${project.build.directory}/jackson-dataformat-xml"/>
+                </jar>
+                <delete dir="${project.build.directory}/jackson-dataformat-xml"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jackson-dataformat-yaml/"
+                           includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jackson-dataformat-yaml-2.11.4.jar">
+                  <fileset dir="${project.build.directory}/jackson-dataformat-yaml"/>
+                </jar>
+                <delete dir="${project.build.directory}/jackson-dataformat-yaml"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jackson-datatype-guava/"
+                           includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jackson-datatype-guava-2.10.0.jar">
+                  <fileset dir="${project.build.directory}/jackson-datatype-guava"/>
+                </jar>
+                <delete dir="${project.build.directory}/jackson-datatype-guava"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jackson-datatype-jdk8/"
+                           includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jackson-datatype-jdk8-2.10.0.jar">
+                  <fileset dir="${project.build.directory}/jackson-datatype-jdk8"/>
+                </jar>
+                <delete dir="${project.build.directory}/jackson-datatype-jdk8"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jackson-datatype-jsr310/"
+                           includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jackson-datatype-jsr310-2.10.0.jar">
+                  <fileset dir="${project.build.directory}/jackson-datatype-jsr310"/>
+                </jar>
+                <delete dir="${project.build.directory}/jackson-datatype-jsr310"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jackson-module-jaxb-annotations/"
+                           includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jackson-module-jaxb-annotations-2.10.1.jar">
+                  <fileset dir="${project.build.directory}/jackson-module-jaxb-annotations"/>
+                </jar>
+                <delete dir="${project.build.directory}/jackson-module-jaxb-annotations"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/jakarta.xml.bind-api/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/jakarta.xml.bind-api-2.3.2.jar">
+                  <fileset dir="${project.build.directory}/jakarta.xml.bind-api"/>
+                </jar>
+                <delete dir="${project.build.directory}/jakarta.xml.bind-api"/>
+                <delete>
+                  <fileset dir="${project.build.directory}/woodstox-core/" includes="*.class"/>
+                </delete>
+                <jar destfile="${project.build.directory}/classes/woodstox-core-6.0.2.jar">
+                  <fileset dir="${project.build.directory}/woodstox-core"/>
+                </jar>
+                <delete dir="${project.build.directory}/woodstox-core"/>
               </tasks>
             </configuration>
           </execution>
@@ -340,6 +695,7 @@
             <Bundle-ClassPath>.,sjk-core-0.14.jar,dnsjava-2.1.8.jar,{maven-dependencies}</Bundle-ClassPath>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Transitive>true</Embed-Transitive>
+            <Include-Resource>{maven-resources},/dse.yaml=src/main/resources/dse.yaml</Include-Resource>
           </instructions>
         </configuration>
       </plugin>

@@ -17,6 +17,7 @@
  */
 package io.stargate.db.dse.impl;
 
+import com.datastax.bdp.cassandra.cql3.SolrQueryOperationFactory;
 import com.datastax.oss.driver.shaded.guava.common.annotations.VisibleForTesting;
 import io.reactivex.Single;
 import io.stargate.auth.AuthenticationSubject;
@@ -110,17 +111,40 @@ public class StargateQueryHandler implements QueryHandler {
       long queryStartNanoTime) {
 
     QueryState state = queryState.cloneWithKeyspaceIfSet(options.getKeyspace());
-    CQLStatement statement;
     try {
-      statement = QueryProcessor.getStatement(query, state);
-      options.prepare(statement.getBindVariables());
+      /*CQLStatement parsedStatement = QueryProcessor.parseStatement(query, queryState);
+      SolrQueryType solrStmntType =
+          SolrQueryType.fromStatement(parsedStatement, options, queryState);
+      if (solrStmntType.equals(SolrQueryType.NONE)) {
+        // TODO-SEARCH authz
+
+      } else {*/
+      return new SolrQueryOperationFactory(this)
+          .create(query, queryState, options, customPayload, queryStartNanoTime, false)
+          .process();
+      // .executeSolrStatement(
+      //  query, parsedStatement, solrStmntType, options, queryState, customPayload);
+      //      }
     } catch (Exception e) {
       return QueryProcessor.auditLogger.logFailedQuery(query, state, e).andThen(Single.error(e));
     }
 
-    if (!queryState.isSystem()) QueryProcessor.metrics.regularStatementsExecuted.inc();
+    // if (!queryState.isSystem()) QueryProcessor.metrics.regularStatementsExecuted.inc();
 
-    return processStatement(statement, state, options, customPayload, queryStartNanoTime);
+    // return processStatement(statement, state, options, customPayload, queryStartNanoTime);
+  }
+
+  public Single<ResultMessage> processNonSearchQueries(
+      CQLStatement statement,
+      String query,
+      QueryState queryState,
+      QueryOptions options,
+      Map<String, ByteBuffer> customPayload,
+      long queryStartNanoTime) {
+    statement = QueryProcessor.getStatement(query, queryState);
+    options.prepare(statement.getBindVariables());
+    if (!queryState.isSystem()) QueryProcessor.metrics.regularStatementsExecuted.inc();
+    return processStatement(statement, queryState, options, customPayload, queryStartNanoTime);
   }
 
   @Override
@@ -184,7 +208,7 @@ public class StargateQueryHandler implements QueryHandler {
   }
 
   @VisibleForTesting
-  protected void authorizeByToken(Map<String, ByteBuffer> customPayload, CQLStatement statement) {
+  public void authorizeByToken(Map<String, ByteBuffer> customPayload, CQLStatement statement) {
     AuthenticationSubject authenticationSubject = loadAuthenticationSubject(customPayload);
 
     if (!getAuthorizationService().isPresent()) {
